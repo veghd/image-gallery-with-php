@@ -175,3 +175,23 @@ function dispatch($actualRoute, $notFound) {
     }
     return $notFound();
 }
+
+/**
+ * updateImage() - Egy kép leírásának módosítása, azonosító alapján
+ *
+ * @param [type] $connection
+ * @param [type] $id
+ * @param [type] $title
+ * @return void
+ */
+function updateImage($connection, $id, $title) {
+    $query = "UPDATE photos SET title = ? WHERE id = ?";
+    if ($statment = mysqli_prepare($connection, $query)) {
+        mysqli_stmt_bind_param($statment, "si", $title, $id);
+        mysqli_stmt_execute($statment);
+        $result = mysqli_stmt_get_result($statment);
+    } else {
+        logMessage("ERROR", 'Query error: ' . mysqli_error($connection));
+        errorPage();
+    }
+}
